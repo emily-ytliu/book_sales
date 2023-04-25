@@ -1,5 +1,7 @@
 package com.example.java_project_01.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,10 +68,35 @@ public class BookSalesServiceImpl implements BookSalesService{
 		return new BookSalesResponse(bookSalesDao.save(bookSales), RtnCode.SUCCESSFUL.getMessage());
 	}
 
+	//分類搜尋
 	@Override
-	public BookSalesResponse findByCategory(List<String> categoryList) {
-		// TODO Auto-generated method stub
-		return null;
+	public BookSalesResponse findByCategory(String category) {
+		//檢查: 輸入的String 不能是null、空字串、全空白
+		if (!StringUtils.hasText(category)) {
+			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
+		}
+		//把切好的category放入陣列
+		String ary[] = category.split(", ");
+		//陣列轉成String
+//		String str1 = Arrays.toString(ary);
+		//去除掉中括號
+//		str1.substring(1, str1.length()-1);
+		
+		//把不同分類名稱加入到List
+		List<String> cateList = new ArrayList<>();
+		for (String item : ary) {
+			cateList.add(item);
+		}
+		//檢查: List裡的每個項目String 不能是null、空字串、全空白
+		for (String item : cateList) {
+			if (!StringUtils.hasText(item)) {
+				continue;
+			}
+		}
+		
+		
+		
+		return new BookSalesResponse();
 	}
 	
 	
