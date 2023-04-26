@@ -16,7 +16,7 @@ public class BookSales {
 	
 	@Id
 	@Column(name = "ISBN")
-	private String ISBN;
+	private String isbn;
 	
 	@Column(name = "author")
 	private String author;
@@ -32,6 +32,22 @@ public class BookSales {
 	
 	@Column(name = "category")
 	private List<String> categoryList;
+	
+	public BookSales() {
+		
+	}
+
+	public BookSales(String bookName, String isbn, String author, int price, int inventory, int sales,
+			List<String> categoryList) {
+		super();
+		this.bookName = bookName;
+		this.isbn = isbn;
+		this.author = author;
+		this.price = price;
+		this.inventory = inventory;
+		this.sales = sales;
+		this.categoryList = categoryList;
+	}
 
 	public String getBookName() {
 		return bookName;
@@ -41,12 +57,12 @@ public class BookSales {
 		this.bookName = bookName;
 	}
 
-	public String getISBN() {
-		return ISBN;
+	public String getIsbn() {
+		return isbn;
 	}
 
-	public void setISBN(String iSBN) {
-		ISBN = iSBN;
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
 	}
 
 	public String getAuthor() {
@@ -88,5 +104,5 @@ public class BookSales {
 	public void setCategoryList(List<String> categoryList) {
 		this.categoryList = categoryList;
 	}
-	
+
 }

@@ -10,5 +10,7 @@ import com.example.java_project_01.entity.BookSales;
 @Repository
 public interface BookSalesDao extends JpaRepository<BookSales, String>{
 
-	public List<BookSales> findByItem();
+//	public List<BookSales> findAllByItem(List<String> categoryList);
+	
+	public List<BookSales> findByCategoryListContaining(List<String> categoryList);
 }

@@ -11,5 +11,5 @@ public interface BookSalesService {
 	public BookSalesResponse addBookInfo(BookSales bookSales);
 	
 	//分類搜尋
-	public BookSalesResponse findByCategory(String category);
+	public BookSalesResponse findByCategoryList(List<String> categoryList);
 }

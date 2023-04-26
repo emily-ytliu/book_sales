@@ -19,4 +19,9 @@ public class BookSalesController {
 	public BookSalesResponse addBookInfo(@RequestBody BookSalesRequest request) {
 		return bookSalesService.addBookInfo(request.getBookSales());
 	}
+	
+	@PostMapping(value = "find_by_category")
+	public BookSalesResponse findByCategory(@RequestBody BookSalesRequest request) {
+		return bookSalesService.findByCategoryList(request.getCategoryList());
+	}
 }

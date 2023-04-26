@@ -14,13 +14,13 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.boot:spring-boot-starter-web'  //¥t¥~·s¼W¨Ì¿à «á­n°O±oGradle refresh
+	implementation 'org.springframework.boot:spring-boot-starter-web'  //ï¿½tï¿½~ï¿½sï¿½Wï¿½Ì¿ï¿½ ï¿½ï¿½nï¿½Oï¿½oGradle refresh
 	
-	//¨Ï¥Î¸ê®Æ®w
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  //¥t¥~·s¼W¨Ì¿à «á­n°O±oGradle refresh
+	//ï¿½Ï¥Î¸ï¿½Æ®w
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  //ï¿½tï¿½~ï¿½sï¿½Wï¿½Ì¿ï¿½ ï¿½ï¿½nï¿½Oï¿½oGradle refresh
 	
 	//MySQL connector
-	implementation 'mysql:mysql-connector-java:8.0.31'  //¥t¥~·s¼W¨Ì¿à «á­n°O±oGradle refresh
+	implementation 'mysql:mysql-connector-java:8.0.31'  //ï¿½tï¿½~ï¿½sï¿½Wï¿½Ì¿ï¿½ ï¿½ï¿½nï¿½Oï¿½oGradle refresh
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
