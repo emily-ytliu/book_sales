@@ -3,7 +3,9 @@ package com.example.java_project_01.vo;
 import java.util.List;
 
 import com.example.java_project_01.entity.BookSales;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookSalesResponse {
 	
 	private List<ShowForResult> showForResult;

@@ -1,5 +1,8 @@
 package com.example.java_project_01.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class ShowForResult {
 
 	private String bookName;
@@ -20,7 +23,7 @@ public class ShowForResult {
 		
 	}
 
-	//基本
+	//方法二: 分類搜尋
 	public ShowForResult(String bookName, String isbn, String author, int price, int inventory) {
 		super();
 		this.bookName = bookName;
@@ -50,20 +53,21 @@ public class ShowForResult {
 		this.sales = sales;
 	}
 	
-	//方法四: 分類
-	public ShowForResult(String bookName, String isbn, String author, int price, String category) {
+	//方法四: 更新
+	public ShowForResult(String bookName, String isbn, String author, int price, int inventory, String category) {
 		super();
 		this.bookName = bookName;
 		this.isbn = isbn;
 		this.author = author;
 		this.price = price;
+		this.inventory = inventory;
 		this.category = category;
 	}
-
+	
 	public String getBookName() {
 		return bookName;
 	}
-	
+
 	public void setBookName(String bookName) {
 		this.bookName = bookName;
 	}

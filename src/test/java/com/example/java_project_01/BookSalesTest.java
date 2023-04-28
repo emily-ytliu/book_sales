@@ -95,5 +95,11 @@ public class BookSalesTest {
 		System.out.println(result.getMessage());
 	}
 	
+	//===方法四=======================
+	@Test
+	public void updateBookInfoTest() {
+		BookSalesResponse result = bookSalesService.updateBookInfo("9786263524552", 180, 99, "中文,輕小說");
+		System.out.println(result.getMessage());
+	}
 	
 }

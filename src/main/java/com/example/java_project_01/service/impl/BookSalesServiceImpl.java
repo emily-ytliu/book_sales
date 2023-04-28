@@ -2,8 +2,11 @@ package com.example.java_project_01.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,46 +128,110 @@ public class BookSalesServiceImpl implements BookSalesService{
 	//===方法四=======================
 	//更新書籍資訊
 	@Override
-	public BookSalesResponse updateBookInfo(List<BookSales> bookSalesList) {
-		//檢查: 輸入的List 不能是null、不能是空、不能是全空白
-		if (!CollectionUtils.isEmpty(bookSalesList)) {
-			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
-		}
-		//檢查: 輸入的List裡的每個項目
+	public BookSalesResponse updateBookInfo(String isbn, int price, int inventory, String category) {
+		//檢查: 輸入的每個項目
 		//     String: bookName、isbn、author、category 不能是null、不能是空、不能是全空白
 		//     int: price、inventory、sales 不能是負數
-		for (BookSales item : bookSalesList) {
-			if (!StringUtils.hasText(item.getBookName())
-					|| !StringUtils.hasText(item.getIsbn())
-					|| !StringUtils.hasText(item.getAuthor())
-					|| item.getPrice() < 0
-					|| item.getInventory() < 0
-					|| item.getSales() < 0
-					|| !StringUtils.hasText(item.getCategory())) {
-				return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
+		List<String> cateList = new ArrayList<>();
+		if (!StringUtils.hasText(isbn)
+				|| price < 0
+				|| inventory < 0
+				|| !StringUtils.hasText(category)) {
+			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
+		}
+		//檢查: 輸入的category裡的每個分類 不能是null、不能是空、不能是全空白
+		String ary[] = category.split(", ");  //ary是記憶體位址
+		List<String> list = new ArrayList<>(Arrays.asList(ary));  //轉成List
+		for (String cateItem : list) {
+			if (!StringUtils.hasText(cateItem)) {
+				continue;
+			}
+			cateList.add(cateItem);
+		}
+		//用isbn(PK)從資料庫找到某書籍資訊
+		Optional<BookSales> op = bookSalesDao.findById(isbn);
+		//把op強制轉成List
+		List<BookSales> opRes = (List<BookSales>) op.get();
+		//只顯示書名、ISBN、作者、價格、庫存、分類
+		List<ShowForResult> forUpdate = new ArrayList<>();
+		for (BookSales item : opRes) {
+			ShowForResult showForUpdate = new ShowForResult(op.get().getBookName(), op.get().getIsbn(), 
+					op.get().getAuthor(), op.get().getPrice(), op.get().getInventory(), op.get().getCategory());
+			forUpdate.add(showForUpdate);
+		}
+		
+		//如果 輸入的價格 和原本的資料庫不同，才能更新
+		if (price == op.get().getPrice()) {
+			return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
+		}
+		//更新價格
+		op.get().setPrice(price);
+		
+		//如果 輸入的庫存 和原本的資料庫不同，才能更新
+		if (inventory == op.get().getInventory()) {
+			return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
+		}	
+		//更新庫存
+		op.get().setInventory(inventory);
+		
+		//檢查: DB的category裡的每個分類 不能是null、不能是空、不能是全空白...需要檢查嗎?
+		List<String> cateDBList = new ArrayList<>();
+		String aryDB[] = op.get().getCategory().split(", ");  
+		List<String> listDB = new ArrayList<>(Arrays.asList(aryDB));  //轉成List
+		for (String cateItem : listDB) {
+			if (!StringUtils.hasText(cateItem)) {
+				continue;
+			}
+			cateDBList.add(cateItem);
+		}
+		//如果 輸入的分類List 和 資料庫的分類List 所有分類完全一樣
+		for (String cateItem : cateList) {
+			for (String cateDBItem : cateDBList) {
+				if (cateItem.equals(cateDBItem)) {
+					return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
+				}
 			}
 		}
-		//檢查: String category裡的每個分類 不能是null、不能是空、不能是全空白
+		//更新分類
+		op.get().setCategory(category);
 		
-		//用', '切割String category，把切好的category放入陣列
-//		String ary[] = category.split(", ");  //ary是記憶體位址
+		bookSalesDao.save(op.get());
+		return new BookSalesResponse(forUpdate, RtnCode.SUCCESSFUL.getMessage());
 		
 		//陣列轉成String
 //		String str1 = Arrays.toString(ary);
 		//去除掉中括號
 //		str1.substring(1, str1.length()-1);
-				
-		//把不同分類名稱加入到List
-		//檢查: List裡的每個項目String 不能是null、空字串、全空白
-//		List<String> cateList = new ArrayList<>();
-//		for (String item : ary) {
-//			if (!StringUtils.hasText(item)) {
-//				continue;
-//			}
-//			cateList.add(item);
-//		}
-		//與資料庫所有的分類做比對，只要有任一符合就回傳資料
-//		輸入不同的分類，java回傳資料庫只要有任一項符合輸入的分類就回傳這些資料
+
+	}
+
+	//===方法四=======================
+	//書籍銷售
+	@Override
+	public BookSalesResponse buyBookByIsbn(Map<String, Integer> buyBookMap) {
+		//檢查: 輸入的String isbn 不能是null、不能是空、不能是全空白
+		//     輸入的int quantity 不能是負數
+		List<String> isbnList = new ArrayList<>();
+		Map<String, Integer> finalBookMap = new HashMap();
+		int priceTotal = 0;
+		for (Entry<String, Integer> map : buyBookMap.entrySet()) {
+			if (!StringUtils.hasText(map.getKey()) || map.getValue() < 0) {
+				return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
+			}
+			isbnList.add(map.getKey());
+		}
+		//確認資料庫是否存在isbnList的isbn
+		List<BookSales> result = bookSalesDao.findAllById(isbnList);
+		if (result.isEmpty()) {
+			return new BookSalesResponse(RtnCode.NOT_FOUND.getMessage());
+		}
+		for (BookSales resItem: result) {
+			for (Entry<String, Integer> map : buyBookMap.entrySet()) {
+				if (resItem.getIsbn().equals(map.getKey())) {
+					int pricaTotal = (int) map.getValue() * resItem.getPrice();
+				}
+			}
+		}
 		return null;
 	}
 	

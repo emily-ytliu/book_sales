@@ -1,6 +1,7 @@
 package com.example.java_project_01.service.ifs;
 
 import java.util.List;
+import java.util.Map;
 
 import com.example.java_project_01.entity.BookSales;
 import com.example.java_project_01.vo.BookSalesResponse;
@@ -20,7 +21,10 @@ public interface BookSalesService {
 	public BookSalesResponse searchByKeyword(Boolean isCustomer, String keyword);
 	
 	//方法四
-	//更新書籍資訊
-	public BookSalesResponse updateBookInfo(List<BookSales> bookSalesList);
+	//更新書籍資訊(價格、庫存、分類)
+	public BookSalesResponse updateBookInfo(String isbn, int price, int inventory, String category);
 	
+	//方法五
+	//書籍銷售
+	public BookSalesResponse buyBookByIsbn(Map<String, Integer> buyBookMap);
 }

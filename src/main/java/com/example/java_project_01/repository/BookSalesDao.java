@@ -19,12 +19,13 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	
 	//===JPQL===========================
 	//用書名、ISBN、作者搜尋
-	@Transactional
-	@Modifying
 	@Query("select b from BookSales b "
 			+ "where b.bookName like %:keyword% or b.isbn like %:keyword% or b.author like %:keyword%")
 	public List<BookSales> findByKeyword(@Param("keyword") String keyword);
 	
+	
+	
+
 	
 //	@Transactional
 //	@Modifying
