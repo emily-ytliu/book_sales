@@ -1,44 +1,46 @@
-package com.example.java_project_01.entity;
+package com.example.java_project_01.vo;
 
-import java.util.List;
+public class ShowForResult {
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "book_sales")
-public class BookSales {
-
-	@Column(name = "book_name")
 	private String bookName;
 	
-	@Id
-	@Column(name = "ISBN")
 	private String isbn;
 	
-	@Column(name = "author")
 	private String author;
 	
-	@Column(name = "price")
 	private int price;
 	
-	@Column(name = "inventory")
 	private int inventory;
 	
-	@Column(name = "sales")
 	private int sales;
 	
-	@Column(name = "category")
 	private String category;
-	
-	public BookSales() {
+
+	public ShowForResult() {
 		
 	}
 
-	public BookSales(String bookName, String isbn, String author, int price, int inventory, int sales,
-			String category) {
+	//基本
+	public ShowForResult(String bookName, String isbn, String author, int price, int inventory) {
+		super();
+		this.bookName = bookName;
+		this.isbn = isbn;
+		this.author = author;
+		this.price = price;
+		this.inventory = inventory;
+	}
+	
+	//方法三: 消費者
+	public ShowForResult(String bookName, String isbn, String author, int price) {
+		super();
+		this.bookName = bookName;
+		this.isbn = isbn;
+		this.author = author;
+		this.price = price;
+	}
+	
+	//方法三: 書商
+	public ShowForResult(String bookName, String isbn, String author, int price, int inventory, int sales) {
 		super();
 		this.bookName = bookName;
 		this.isbn = isbn;
@@ -46,13 +48,22 @@ public class BookSales {
 		this.price = price;
 		this.inventory = inventory;
 		this.sales = sales;
+	}
+	
+	//方法四: 分類
+	public ShowForResult(String bookName, String isbn, String author, int price, String category) {
+		super();
+		this.bookName = bookName;
+		this.isbn = isbn;
+		this.author = author;
+		this.price = price;
 		this.category = category;
 	}
 
 	public String getBookName() {
 		return bookName;
 	}
-
+	
 	public void setBookName(String bookName) {
 		this.bookName = bookName;
 	}
@@ -104,5 +115,5 @@ public class BookSales {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
+	
 }
