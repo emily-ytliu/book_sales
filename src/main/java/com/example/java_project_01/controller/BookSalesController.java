@@ -34,4 +34,9 @@ public class BookSalesController {
 	public BookSalesResponse updateBookInfo(@RequestBody BookSalesRequest request) {
 		return bookSalesService.updateBookInfo(request.getIsbn(), request.getPrice(), request.getInventory(), request.getCategory());
 	}
+	
+	@PostMapping(value = "buy_book")
+	public BookSalesResponse buyBookByIsbn(@RequestBody BookSalesRequest request) {
+		return bookSalesService.buyBookByIsbn(request.getBuyBookMap());
+	}
 }

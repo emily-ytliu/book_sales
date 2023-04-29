@@ -1,6 +1,7 @@
 package com.example.java_project_01.vo;
 
 import java.util.List;
+import java.util.Map;
 
 import com.example.java_project_01.entity.BookSales;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +13,7 @@ public class BookSalesRequest {
 	
 	private String category;
 	
-	@JsonProperty("is_cus")
+	@JsonProperty("is_customer")
 	private boolean isCustomer;
 	
 	private String keyword;
@@ -22,6 +23,9 @@ public class BookSalesRequest {
 	private int price;
 	
 	private int inventory;
+	
+	@JsonProperty("buy_book_map")
+	private Map<String, Integer> buyBookMap;
 
 	public BookSales getBookSales() {
 		return bookSales;
@@ -77,6 +81,14 @@ public class BookSalesRequest {
 
 	public void setInventory(int inventory) {
 		this.inventory = inventory;
+	}
+
+	public Map<String, Integer> getBuyBookMap() {
+		return buyBookMap;
+	}
+
+	public void setBuyBookMap(Map<String, Integer> buyBookMap) {
+		this.buyBookMap = buyBookMap;
 	}
 	
 }

@@ -4,6 +4,7 @@ public enum RtnCode {
 
 	SUCCESSFUL("200", "Successful"),  //逗點
 	DATA_ERROR("400", "Data error!"),
+	SHORTAGE("400", "Inventory shortage!"),
 	SAME_DATA("400", "Same data!"),
 	NOT_FOUND("404", "Not found!"),
 	ALREADY_EXIST("409", "Already exists!");

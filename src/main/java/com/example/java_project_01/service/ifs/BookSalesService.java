@@ -25,6 +25,6 @@ public interface BookSalesService {
 	public BookSalesResponse updateBookInfo(String isbn, int price, int inventory, String category);
 	
 	//方法五
-	//書籍銷售
+	//書籍銷售<ISBN, 購買數量>
 	public BookSalesResponse buyBookByIsbn(Map<String, Integer> buyBookMap);
 }

@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookSalesResponse {
 	
+	private List<ShowForBuyingBook> showForBuyingBook;
+	
 	private List<ShowForResult> showForResult;
 	
 	private BookSales bookSales;
@@ -17,9 +19,14 @@ public class BookSalesResponse {
 	public BookSalesResponse() {
 		
 	}
-	
-	public BookSalesResponse(List<ShowForResult> showForResult, String message) {
+
+	public BookSalesResponse(List<ShowForBuyingBook> showForBuyingBook) {
 		super();
+		this.showForBuyingBook = showForBuyingBook;
+	}
+
+
+	public BookSalesResponse(List<ShowForResult> showForResult, String message) {
 		this.showForResult = showForResult;
 		this.message = message;
 	}
@@ -55,6 +62,14 @@ public class BookSalesResponse {
 
 	public void setShowForResult(List<ShowForResult> showForResult) {
 		this.showForResult = showForResult;
+	}
+
+	public List<ShowForBuyingBook> getShowForBuyingBook() {
+		return showForBuyingBook;
+	}
+
+	public void setShowForBuyingBook(List<ShowForBuyingBook> showForBuyingBook) {
+		this.showForBuyingBook = showForBuyingBook;
 	}
 	
 	

@@ -19,29 +19,29 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	
 	//===JPQL===========================
 	//用書名、ISBN、作者搜尋
-	@Query("select b from BookSales b "
-			+ "where b.bookName like %:keyword% or b.isbn like %:keyword% or b.author like %:keyword%")
+	@Query("SELECT b FROM BookSales b "
+			+ "WHERE b.bookName LIKE %:keyword% OR b.isbn LIKE %:keyword% OR b.author LIKE %:keyword%")
 	public List<BookSales> findByKeyword(@Param("keyword") String keyword);
 	
-	
+//	@Query(VALUE = "SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory)")
+//	public List<BookSales> showForBuyingBook(@Param(""))
 	
 
 	
-//	@Transactional
-//	@Modifying
+
 //	@Query("select BookSales b where b.category in :newCategory")
+	
+//	//UPDATE才需要加: 
+//	  @Transactional
+//	  @Modifying
 	
 //	//用書名、ISBN、作者搜尋
 //	//消費者: 只顯示書名、ISBN、作者、價格
-//	@Transactional
-//	@Modifying
 //	@Query("select b.bookName, b.isbn, b.author, b.price from BookSales b "
 //			+ "where b.bookName like %:keyword% or b.isbn like %:keyword% or b.author like %:keyword%")
 //	public List<Object[]> showForCustomer(@Param("keyword") String keyword);
 //	
 //	//書商: 只顯示書名、ISBN、作者、價格
-//	@Transactional
-//	@Modifying
 //	@Query("select b.bookName, b.isbn, b.author, b.price, b.sales, b.inventory from BookSales b "
 //			+ "where b.bookName like %:keyword% or b.isbn like %:keyword% or b.author like %:keyword%")
 //	public List<Object[]> showForSeller(@Param("keyword") String keyword);
