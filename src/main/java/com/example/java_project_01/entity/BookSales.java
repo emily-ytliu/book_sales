@@ -48,6 +48,15 @@ public class BookSales {
 		this.price = price;
 	}
 	
+	public BookSales(String bookName, String isbn, String author, int price, int inventory) {
+		super();
+		this.bookName = bookName;
+		this.isbn = isbn;
+		this.author = author;
+		this.price = price;
+		this.inventory = inventory;
+	}
+
 	public BookSales(String bookName, String isbn, String author, int price, int inventory, String category) {
 		super();
 		this.bookName = bookName;

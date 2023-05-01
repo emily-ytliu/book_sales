@@ -54,7 +54,15 @@ public class BookSalesServiceImpl implements BookSalesService{
 		if (!bookSales.getIsbn().matches(pattern)) {
 			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
 		}
-			
+		//檢查4: 輸入的category裡的每個分類 不能是null、不能是空、不能是全空白
+		String aryDB[] = bookSales.getCategory().split(", ");  
+		List<String> listDB = new ArrayList<>(Arrays.asList(aryDB));  //Array轉成List
+		for (String cateItem : listDB) {
+			if (!StringUtils.hasText(cateItem)) {
+				return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
+			}
+		}	
+		
 		//確認: 要新增的bookSales是否已經存在資料庫(不存在的才能新增)
 		Optional<BookSales> op = bookSalesDao.findById(bookSales.getIsbn());
 		if (op.isPresent()) {
@@ -72,19 +80,19 @@ public class BookSalesServiceImpl implements BookSalesService{
 			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
 		}
 		//確認資料庫有沒有輸入的category的資料
-		List<BookSales> result = bookSalesDao.findByCategoryContaining(category);
+		List<BookSales> result = bookSalesDao.findByCategory(category);
 		if (result.isEmpty()) {
 			return new BookSalesResponse(RtnCode.NOT_FOUND.getMessage());
 		}
 		//分類: 只顯示書名、ISBN、作者、價格、庫存量
-		List<ShowForResult> forBasic = new ArrayList<>();
-		for (BookSales item : result) {
-			ShowForResult showForBasic = new ShowForResult(item.getBookName(), item.getIsbn(), 
-					item.getAuthor(), item.getPrice(), item.getInventory());
-			forBasic.add(showForBasic);
-		}
+//		List<ShowForResult> forBasic = new ArrayList<>();
+//		for (BookSales item : result) {
+//			ShowForResult showForBasic = new ShowForResult(item.getBookName(), item.getIsbn(), 
+//					item.getAuthor(), item.getPrice(), item.getInventory());
+//			forBasic.add(showForBasic);
+//		}
 		//如果確定資料庫有此分類的書籍，回傳	
-		return new BookSalesResponse(forBasic, RtnCode.SUCCESSFUL.getMessage());
+		return new BookSalesResponse(result);
 	}
 
 	//===方法三=======================
@@ -158,33 +166,25 @@ public class BookSalesServiceImpl implements BookSalesService{
 		//用isbn(PK)從資料庫找到某書籍資訊
 		//只顯示書名、ISBN、作者、價格、庫存、分類
 		List<BookSales> result = bookSalesDao.findByIsbnForSearching(isbn);
-//		Optional<BookSales> op = bookSalesDao.findById(isbn);
-//		//把op強制轉成List
-//		List<BookSales> opRes = (List<BookSales>) op.get();
-//		//只顯示書名、ISBN、作者、價格、庫存、分類
-//		List<ShowForResult> forUpdate = new ArrayList<>();
-//		for (BookSales item : opRes) {
-//			ShowForResult showForUpdate = new ShowForResult(op.get().getBookName(), op.get().getIsbn(), 
-//					op.get().getAuthor(), op.get().getPrice(), op.get().getInventory(), op.get().getCategory());
-//			forUpdate.add(showForUpdate);
-//		}
 		//確認: 資料庫是否有此Isbn的資料
 		if (result.size() == 0) {
 			return new BookSalesResponse(RtnCode.NOT_FOUND.getMessage());
 		}
 		
 		for (BookSales resItem : result) {
+			//如果什麼都沒有確認，資料庫的sales會變成預設值0
+			
 			//如果 輸入的價格 和原本的資料庫不同，才能更新
-			if (price == resItem.getPrice()) {
-				return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
-			}
+//			if (price == resItem.getPrice()) {
+//				return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
+//			}
 			//更新價格
 			resItem.setPrice(price);
 			
 			//如果 輸入的庫存 和原本的資料庫不同，才能更新
-			if (inventory == resItem.getInventory()) {
-				return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
-			}	
+//			if (inventory == resItem.getInventory()) {
+//				return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
+//			}	
 			//更新庫存
 			resItem.setInventory(inventory);
 			
@@ -199,13 +199,13 @@ public class BookSalesServiceImpl implements BookSalesService{
 				cateDBList.add(cateItem);
 			}
 			//如果 輸入的分類 和 資料庫的分類 所有分類項目完全一樣...現在問題:只要有相同的項目就會return
-			for (String inputItem : cateList) {
-				for (String cateDBItem : cateDBList) {
-					if (inputItem.equals(cateDBItem)) {
-						return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
-					}
-				}
-			}
+//			for (String inputItem : cateList) {
+//				for (String cateDBItem : cateDBList) {
+//					if (inputItem.equals(cateDBItem)) {
+//						return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
+//					}
+//				}
+//			}
 			//更新分類
 			resItem.setCategory(category);
 		}

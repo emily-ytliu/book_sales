@@ -19,14 +19,23 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	public List<BookSales> findByCategoryContaining(String category);
 	
 	//===JPQL=============================
+	//方法二: 分類搜尋
+	//只顯示書名、ISBN、作者、價格、庫存量，這5個欄位
+	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory) FROM BookSales b "
+			+ "WHERE b.category LIKE %:inputCategory%")
+	public List<BookSales> findByCategory(@Param("inputCategory") String category);
+	
+	//方法三: 消費者或書商搜尋
 	//用書名、ISBN、作者搜尋
 	@Query("SELECT b FROM BookSales b "
 			+ "WHERE b.bookName LIKE %:keyword% OR b.isbn LIKE %:keyword% OR b.author LIKE %:keyword%")
 	public List<BookSales> findByKeyword(@Param("keyword") String keyword);
 	
+	//方法四: 更新書籍資訊
 	//只顯示書名、ISBN、作者、價格、庫存量、分類這6個欄位
-	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory, b.category) FROM BookSales b")
-	public List<BookSales> findByIsbnForSearching(@Param("isbn") String isbn);
+	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory, b.category) FROM BookSales b "
+			+ "WHERE b.isbn = :inputIsbn")
+	public List<BookSales> findByIsbnForSearching(@Param("inputIsbn") String isbn);
 	
 	//只顯示書名、ISBN、作者、價格這4個欄位
 	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price) FROM BookSales b")
