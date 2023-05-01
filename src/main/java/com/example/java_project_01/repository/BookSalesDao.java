@@ -1,5 +1,6 @@
 package com.example.java_project_01.repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -17,13 +18,17 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	
 	public List<BookSales> findByCategoryContaining(String category);
 	
-	//===JPQL===========================
+	//===JPQL=============================
 	//用書名、ISBN、作者搜尋
 	@Query("SELECT b FROM BookSales b "
 			+ "WHERE b.bookName LIKE %:keyword% OR b.isbn LIKE %:keyword% OR b.author LIKE %:keyword%")
 	public List<BookSales> findByKeyword(@Param("keyword") String keyword);
 	
-	//只顯示書名、ISBN、作者、價格這四個欄位
+	//只顯示書名、ISBN、作者、價格、庫存量、分類這6個欄位
+	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory, b.category) FROM BookSales b")
+	public List<BookSales> findByIsbnForSearching(@Param("isbn") String isbn);
+	
+	//只顯示書名、ISBN、作者、價格這4個欄位
 	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price) FROM BookSales b")
 	public List<BookSales> findByBookNameAndIsbnAndAuthorAndPrice();
 	
@@ -32,6 +37,7 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	@Query(value = "SELECT * FROM book_sales b "
 			+ "ORDER BY b.sales DESC LIMIT :limitNum", nativeQuery = true)  //nativeQuery = true表示直接對DB操作，等於用原生SQL查詢
 	public List<BookSales> findTopLimitNumOrderBySalesDesc(@Param("limitNum") int limitNum);
+	//因為JPQL不支援LIMIT，所以用原生SQL
 	
 	
 	

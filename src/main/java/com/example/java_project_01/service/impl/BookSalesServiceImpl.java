@@ -1,5 +1,6 @@
 package com.example.java_project_01.service.impl;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,6 +10,8 @@ import java.util.Optional;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -146,61 +149,68 @@ public class BookSalesServiceImpl implements BookSalesService{
 		//檢查: 輸入的category裡的每個分類 不能是null、不能是空、不能是全空白
 		String ary[] = category.split(", ");  //ary是記憶體位址
 		List<String> list = new ArrayList<>(Arrays.asList(ary));  //Array轉成List
-		for (String cateItem : list) {
-			if (!StringUtils.hasText(cateItem)) {
+		for (String inputItem : list) {
+			if (!StringUtils.hasText(inputItem)) {
 				continue;
 			}
-			cateList.add(cateItem);
+			cateList.add(inputItem);
 		}
 		//用isbn(PK)從資料庫找到某書籍資訊
-		Optional<BookSales> op = bookSalesDao.findById(isbn);
-		//把op強制轉成List
-		List<BookSales> opRes = (List<BookSales>) op.get();
 		//只顯示書名、ISBN、作者、價格、庫存、分類
-		List<ShowForResult> forUpdate = new ArrayList<>();
-		for (BookSales item : opRes) {
-			ShowForResult showForUpdate = new ShowForResult(op.get().getBookName(), op.get().getIsbn(), 
-					op.get().getAuthor(), op.get().getPrice(), op.get().getInventory(), op.get().getCategory());
-			forUpdate.add(showForUpdate);
+		List<BookSales> result = bookSalesDao.findByIsbnForSearching(isbn);
+//		Optional<BookSales> op = bookSalesDao.findById(isbn);
+//		//把op強制轉成List
+//		List<BookSales> opRes = (List<BookSales>) op.get();
+//		//只顯示書名、ISBN、作者、價格、庫存、分類
+//		List<ShowForResult> forUpdate = new ArrayList<>();
+//		for (BookSales item : opRes) {
+//			ShowForResult showForUpdate = new ShowForResult(op.get().getBookName(), op.get().getIsbn(), 
+//					op.get().getAuthor(), op.get().getPrice(), op.get().getInventory(), op.get().getCategory());
+//			forUpdate.add(showForUpdate);
+//		}
+		//確認: 資料庫是否有此Isbn的資料
+		if (result.size() == 0) {
+			return new BookSalesResponse(RtnCode.NOT_FOUND.getMessage());
 		}
 		
-		//如果 輸入的價格 和原本的資料庫不同，才能更新
-		if (price == op.get().getPrice()) {
-			return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
-		}
-		//更新價格
-		op.get().setPrice(price);
-		
-		//如果 輸入的庫存 和原本的資料庫不同，才能更新
-		if (inventory == op.get().getInventory()) {
-			return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
-		}	
-		//更新庫存
-		op.get().setInventory(inventory);
-		
-		//檢查: DB的category裡的每個分類 不能是null、不能是空、不能是全空白...需要檢查嗎?
-		List<String> cateDBList = new ArrayList<>();
-		String aryDB[] = op.get().getCategory().split(", ");  
-		List<String> listDB = new ArrayList<>(Arrays.asList(aryDB));  //Array轉成List
-		for (String cateItem : listDB) {
-			if (!StringUtils.hasText(cateItem)) {
-				continue;
+		for (BookSales resItem : result) {
+			//如果 輸入的價格 和原本的資料庫不同，才能更新
+			if (price == resItem.getPrice()) {
+				return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
 			}
-			cateDBList.add(cateItem);
-		}
-		//如果 輸入的分類List 和 資料庫的分類List 所有分類完全一樣
-		for (String cateItem : cateList) {
-			for (String cateDBItem : cateDBList) {
-				if (cateItem.equals(cateDBItem)) {
-					return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
+			//更新價格
+			resItem.setPrice(price);
+			
+			//如果 輸入的庫存 和原本的資料庫不同，才能更新
+			if (inventory == resItem.getInventory()) {
+				return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
+			}	
+			//更新庫存
+			resItem.setInventory(inventory);
+			
+			//檢查: DB的category裡的每個分類 不能是null、不能是空、不能是全空白...增加到新增資訊的方法
+			List<String> cateDBList = new ArrayList<>();
+			String aryDB[] = resItem.getCategory().split(", ");  
+			List<String> listDB = new ArrayList<>(Arrays.asList(aryDB));  //Array轉成List
+			for (String cateItem : listDB) {
+				if (!StringUtils.hasText(cateItem)) {
+					continue;
+				}
+				cateDBList.add(cateItem);
+			}
+			//如果 輸入的分類 和 資料庫的分類 所有分類項目完全一樣...現在問題:只要有相同的項目就會return
+			for (String inputItem : cateList) {
+				for (String cateDBItem : cateDBList) {
+					if (inputItem.equals(cateDBItem)) {
+						return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
+					}
 				}
 			}
+			//更新分類
+			resItem.setCategory(category);
 		}
-		//更新分類
-		op.get().setCategory(category);
-		
-		bookSalesDao.save(op.get());
-		return new BookSalesResponse(forUpdate, RtnCode.SUCCESSFUL.getMessage());
+		bookSalesDao.saveAll(result);
+		return new BookSalesResponse(result);
 		
 		//陣列轉成String
 //		String str1 = Arrays.toString(ary);
@@ -267,8 +277,7 @@ public class BookSalesServiceImpl implements BookSalesService{
 	//暢銷排行
 	@Override
 	public BookSalesResponse getBestSellerTop5() {
-//		List<BookSales> bestSeller = bookSalesDao.findTopLimitNumOrderBySalesDesc(5);
-		List<BookSales> bestSeller = bookSalesDao.findByBookNameAndIsbnAndAuthorAndPrice();
+		List<BookSales> bestSeller = bookSalesDao.findTopLimitNumOrderBySalesDesc(5);
 		return new BookSalesResponse(bestSeller);
 	}
 }

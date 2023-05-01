@@ -47,7 +47,16 @@ public class BookSales {
 		this.author = author;
 		this.price = price;
 	}
-
+	
+	public BookSales(String bookName, String isbn, String author, int price, int inventory, String category) {
+		super();
+		this.bookName = bookName;
+		this.isbn = isbn;
+		this.author = author;
+		this.price = price;
+		this.inventory = inventory;
+		this.category = category;
+	}
 
 	public BookSales(String bookName, String isbn, String author, int price, int inventory, int sales,
 			String category) {
