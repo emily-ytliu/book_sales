@@ -23,6 +23,28 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 			+ "WHERE b.bookName LIKE %:keyword% OR b.isbn LIKE %:keyword% OR b.author LIKE %:keyword%")
 	public List<BookSales> findByKeyword(@Param("keyword") String keyword);
 	
+	//只顯示書名、ISBN、作者、價格這四個欄位
+	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price) FROM BookSales b")
+	public List<BookSales> findByBookNameAndIsbnAndAuthorAndPrice();
+	
+	//===SQL=============================
+	//用銷售量由大到小排序，並限制顯示的資料筆數
+	@Query(value = "SELECT * FROM book_sales b "
+			+ "ORDER BY b.sales DESC LIMIT :limitNum", nativeQuery = true)  //nativeQuery = true表示直接對DB操作，等於用原生SQL查詢
+	public List<BookSales> findTopLimitNumOrderBySalesDesc(@Param("limitNum") int limitNum);
+	
+	
+	
+	
+	
+//	@Query(value = "SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price) FROM BookSales b limit :limitNum", 
+//	nativeQuery = true)  //nativeQuery = true表示直接對DB做操作
+//			+ "WHERE b.bookName = :inputBookName AND b.isbn = :inputIsbn AND b.author = :inputAuthor AND b.price = :inputPrice")
+//	public List<BookSales> findByBookNameAndISBNAndAuthorAndPrice(@Param("inputBookName") String bookName,
+//																  @Param("inputIsbn") String isbn,
+//																  @Param("inputAuthor") String author,
+//																  @Param("inputPrice") int price);
+	
 //	@Query(VALUE = "SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory)")
 //	public List<BookSales> showForBuyingBook(@Param(""))
 	

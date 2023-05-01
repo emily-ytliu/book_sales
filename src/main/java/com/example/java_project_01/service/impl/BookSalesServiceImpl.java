@@ -209,7 +209,7 @@ public class BookSalesServiceImpl implements BookSalesService{
 
 	}
 
-	//===方法四=======================
+	//===方法五=======================
 	//書籍銷售
 	@Override
 	public BookSalesResponse buyBookByIsbn(Map<String, Integer> buyBookMap) {
@@ -259,8 +259,16 @@ public class BookSalesServiceImpl implements BookSalesService{
 			}
 		}
 		bookSalesDao.saveAll(result);
-		return new BookSalesResponse(buyBook);
+//		return new BookSalesResponse(buyBook);
+		return null;
 	}
-	
-	
+
+	//===方法六=======================
+	//暢銷排行
+	@Override
+	public BookSalesResponse getBestSellerTop5() {
+//		List<BookSales> bestSeller = bookSalesDao.findTopLimitNumOrderBySalesDesc(5);
+		List<BookSales> bestSeller = bookSalesDao.findByBookNameAndIsbnAndAuthorAndPrice();
+		return new BookSalesResponse(bestSeller);
+	}
 }

@@ -39,4 +39,9 @@ public class BookSalesController {
 	public BookSalesResponse buyBookByIsbn(@RequestBody BookSalesRequest request) {
 		return bookSalesService.buyBookByIsbn(request.getBuyBookMap());
 	}
+	
+	@PostMapping(value = "best_seller")
+	public BookSalesResponse getBestSellerTop5(@RequestBody BookSalesRequest request) {
+		return bookSalesService.getBestSellerTop5();
+	}
 }

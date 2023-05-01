@@ -33,7 +33,7 @@ public class ShowForResult {
 		this.inventory = inventory;
 	}
 	
-	//方法三: 消費者
+	//方法三: 消費者  //方法六: 暢銷排行
 	public ShowForResult(String bookName, String isbn, String author, int price) {
 		super();
 		this.bookName = bookName;

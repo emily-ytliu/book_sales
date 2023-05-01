@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.example.java_project_01.entity.BookSales;
 import com.example.java_project_01.vo.BookSalesResponse;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 public interface BookSalesService {
 
@@ -27,4 +28,8 @@ public interface BookSalesService {
 	//方法五
 	//書籍銷售<ISBN, 購買數量>
 	public BookSalesResponse buyBookByIsbn(Map<String, Integer> buyBookMap);
+	
+	//方法六
+	//暢銷排行: 銷售量前5
+	public BookSalesResponse getBestSellerTop5();
 }

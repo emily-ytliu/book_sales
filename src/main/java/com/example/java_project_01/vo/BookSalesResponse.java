@@ -5,8 +5,10 @@ import java.util.List;
 import com.example.java_project_01.entity.BookSales;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class BookSalesResponse {
+	
+	private List<BookSales> bookSalesList;
 	
 	private List<ShowForBuyingBook> showForBuyingBook;
 	
@@ -19,11 +21,14 @@ public class BookSalesResponse {
 	public BookSalesResponse() {
 		
 	}
-
-	public BookSalesResponse(List<ShowForBuyingBook> showForBuyingBook) {
-		super();
-		this.showForBuyingBook = showForBuyingBook;
+	
+	public BookSalesResponse(List<BookSales> bookSalesList) {
+		this.bookSalesList = bookSalesList;
 	}
+
+//	public BookSalesResponse(List<ShowForBuyingBook> showForBuyingBook) {
+//		this.showForBuyingBook = showForBuyingBook;
+//	}
 
 
 	public BookSalesResponse(List<ShowForResult> showForResult, String message) {
@@ -70,6 +75,14 @@ public class BookSalesResponse {
 
 	public void setShowForBuyingBook(List<ShowForBuyingBook> showForBuyingBook) {
 		this.showForBuyingBook = showForBuyingBook;
+	}
+
+	public List<BookSales> getBookSalesList() {
+		return bookSalesList;
+	}
+
+	public void setBookSalesList(List<BookSales> bookSalesList) {
+		this.bookSalesList = bookSalesList;
 	}
 	
 	

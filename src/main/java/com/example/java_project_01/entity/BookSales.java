@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Entity
 @Table(name = "book_sales")
 public class BookSales {
@@ -36,6 +39,15 @@ public class BookSales {
 	public BookSales() {
 		
 	}
+
+	public BookSales(String bookName, String isbn, String author, int price) {
+		super();
+		this.bookName = bookName;
+		this.isbn = isbn;
+		this.author = author;
+		this.price = price;
+	}
+
 
 	public BookSales(String bookName, String isbn, String author, int price, int inventory, int sales,
 			String category) {
