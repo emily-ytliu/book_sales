@@ -16,7 +16,7 @@ import com.example.java_project_01.entity.BookSales;
 @Repository
 public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	
-	public List<BookSales> findByCategoryContaining(String category);
+//	public List<BookSales> findByCategoryContaining(String category);
 	
 	//===JPQL=============================
 	//方法二: 分類搜尋
@@ -30,6 +30,12 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	@Query("SELECT b FROM BookSales b "
 			+ "WHERE b.bookName LIKE %:keyword% OR b.isbn LIKE %:keyword% OR b.author LIKE %:keyword%")
 	public List<BookSales> findByKeyword(@Param("keyword") String keyword);
+	
+	//方法三: 消費者
+	//用書名、ISBN、作者搜尋 + 只顯示書名、ISBN、作者、價格這4個欄位 ...待checked
+//	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price) FROM BookSales b "
+//			+ "WHERE b.bookName LIKE %:keyword% OR b.isbn LIKE %:keyword% OR b.author LIKE %:keyword%")
+//	public List<BookSales> findByKeywordForcustomer();
 	
 	//方法四: 更新書籍資訊
 	//只顯示書名、ISBN、作者、價格、庫存量、分類這6個欄位
@@ -47,7 +53,7 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 			+ "ORDER BY b.sales DESC LIMIT :limitNum", nativeQuery = true)  //nativeQuery = true表示直接對DB操作，等於用原生SQL查詢
 	public List<BookSales> findTopLimitNumOrderBySalesDesc(@Param("limitNum") int limitNum);
 	//因為JPQL不支援LIMIT，所以用原生SQL
-	
+	//原生SQL才能用 SELECT *
 	
 	
 	

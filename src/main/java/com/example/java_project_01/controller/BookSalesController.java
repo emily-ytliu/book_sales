@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.java_project_01.service.ifs.BookSalesService;
 import com.example.java_project_01.vo.BookSalesRequest;
 import com.example.java_project_01.vo.BookSalesResponse;
+import com.example.java_project_01.vo.ShowForBuyingBookResponse;
+import com.example.java_project_01.vo.ShowForResultResponse;
 
 @RestController
 public class BookSalesController {
@@ -26,7 +28,7 @@ public class BookSalesController {
 	}
 	
 	@PostMapping(value = "search_by_keyword")
-	public BookSalesResponse searchByKeyword(@RequestBody BookSalesRequest request) {
+	public ShowForResultResponse searchByKeyword(@RequestBody BookSalesRequest request) {
 		return bookSalesService.searchByKeyword(request.isCustomer(), request.getKeyword());
 	}
 	
@@ -36,12 +38,12 @@ public class BookSalesController {
 	}
 	
 	@PostMapping(value = "buy_book")
-	public BookSalesResponse buyBookByIsbn(@RequestBody BookSalesRequest request) {
+	public ShowForBuyingBookResponse buyBookByIsbn(@RequestBody BookSalesRequest request) {
 		return bookSalesService.buyBookByIsbn(request.getBuyBookMap());
 	}
 	
 	@PostMapping(value = "best_seller")
-	public BookSalesResponse getBestSellerTop5(@RequestBody BookSalesRequest request) {
+	public ShowForResultResponse getBestSellerTop5() {
 		return bookSalesService.getBestSellerTop5();
 	}
 }

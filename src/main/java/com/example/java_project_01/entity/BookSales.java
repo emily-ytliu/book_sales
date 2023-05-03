@@ -6,10 +6,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.DynamicUpdate;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+@DynamicUpdate(true)
 @Entity
 @Table(name = "book_sales")
 public class BookSales {
@@ -30,6 +34,7 @@ public class BookSales {
 	@Column(name = "inventory")
 	private int inventory;
 	
+	@Transient  //告訴 Hibernate 不要將其映射到資料庫表格中
 	@Column(name = "sales")
 	private int sales;
 	

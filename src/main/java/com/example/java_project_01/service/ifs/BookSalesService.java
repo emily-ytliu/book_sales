@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.example.java_project_01.entity.BookSales;
 import com.example.java_project_01.vo.BookSalesResponse;
+import com.example.java_project_01.vo.ShowForBuyingBookResponse;
+import com.example.java_project_01.vo.ShowForResultResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 public interface BookSalesService {
@@ -19,7 +21,7 @@ public interface BookSalesService {
 	
 	//方法三
 	//書籍搜尋
-	public BookSalesResponse searchByKeyword(Boolean isCustomer, String keyword);
+	public ShowForResultResponse searchByKeyword(Boolean isCustomer, String keyword);
 	
 	//方法四
 	//更新書籍資訊(價格、庫存、分類)
@@ -27,9 +29,9 @@ public interface BookSalesService {
 	
 	//方法五
 	//書籍銷售<ISBN, 購買數量>
-	public BookSalesResponse buyBookByIsbn(Map<String, Integer> buyBookMap);
+	public ShowForBuyingBookResponse buyBookByIsbn(Map<String, Integer> buyBookMap);
 	
 	//方法六
 	//暢銷排行: 銷售量前5
-	public BookSalesResponse getBestSellerTop5();
+	public ShowForResultResponse getBestSellerTop5();
 }

@@ -22,7 +22,9 @@ import com.example.java_project_01.repository.BookSalesDao;
 import com.example.java_project_01.service.ifs.BookSalesService;
 import com.example.java_project_01.vo.BookSalesResponse;
 import com.example.java_project_01.vo.ShowForBuyingBook;
+import com.example.java_project_01.vo.ShowForBuyingBookResponse;
 import com.example.java_project_01.vo.ShowForResult;
+import com.example.java_project_01.vo.ShowForResultResponse;
 
 @Service
 public class BookSalesServiceImpl implements BookSalesService{
@@ -92,23 +94,23 @@ public class BookSalesServiceImpl implements BookSalesService{
 //			forBasic.add(showForBasic);
 //		}
 		//如果確定資料庫有此分類的書籍，回傳	
-		return new BookSalesResponse(result);
+		return new BookSalesResponse(result, RtnCode.SUCCESSFUL.getMessage());
 	}
 
 	//===方法三=======================
 	//消費者或書商搜尋
 	@Override
-	public BookSalesResponse searchByKeyword(Boolean isCustomer, String keyword) {
+	public ShowForResultResponse searchByKeyword(Boolean isCustomer, String keyword) {
 		//檢查: 輸入的boolean 不能是null
 		//檢查: 輸入的String 不能是null、不能是空字串、不能是全空白
 		if (isCustomer == null
 				|| !StringUtils.hasText(keyword)) {
-			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
+			return new ShowForResultResponse(RtnCode.DATA_ERROR.getMessage());
 		}
 		//確認資料庫是否存在輸入的keyword
 		List<BookSales> result = bookSalesDao.findByKeyword(keyword);
 		if (result.isEmpty()) {
-			return new BookSalesResponse(RtnCode.NOT_FOUND.getMessage());
+			return new ShowForResultResponse(RtnCode.NOT_FOUND.getMessage());
 		}
 		//顯示限定的項目
 		//消費者: 只顯示書名、ISBN、作者、價格
@@ -127,10 +129,10 @@ public class BookSalesServiceImpl implements BookSalesService{
 		}
 		//如果是消費者
 		if (isCustomer = true) {
-			return new BookSalesResponse(forCustomer, RtnCode.SUCCESSFUL.getMessage());
+			return new ShowForResultResponse(forCustomer, RtnCode.SUCCESSFUL.getMessage());
 		} 
 		//如果是書商
-		return new BookSalesResponse(forSeller, RtnCode.SUCCESSFUL.getMessage());
+		return new ShowForResultResponse(forSeller, RtnCode.SUCCESSFUL.getMessage());
 		
 //		List<BookSales> resCustomer = bookSalesDao.showForCustomer(keyword);	
 //		List<BookSales> resSeller = bookSalesDao.showForSeller(keyword);
@@ -163,6 +165,9 @@ public class BookSalesServiceImpl implements BookSalesService{
 			}
 			cateList.add(inputItem);
 		}
+		String cateStr = cateList.toString();  //List轉成String
+		String resCateStr = cateStr.substring(1, cateStr.length()-1);  //去掉中括號
+		
 		//用isbn(PK)從資料庫找到某書籍資訊
 		//只顯示書名、ISBN、作者、價格、庫存、分類
 		List<BookSales> result = bookSalesDao.findByIsbnForSearching(isbn);
@@ -172,57 +177,27 @@ public class BookSalesServiceImpl implements BookSalesService{
 		}
 		
 		for (BookSales resItem : result) {
-			//如果什麼都沒有確認，資料庫的sales會變成預設值0
-			
-			//如果 輸入的價格 和原本的資料庫不同，才能更新
-//			if (price == resItem.getPrice()) {
-//				return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
-//			}
 			//更新價格
 			resItem.setPrice(price);
-			
-			//如果 輸入的庫存 和原本的資料庫不同，才能更新
-//			if (inventory == resItem.getInventory()) {
-//				return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
-//			}	
+			//確認: 輸入的庫存 要大於 原本資料庫的庫存 (因為是進貨)
+			if (inventory <= resItem.getInventory()) {
+				return new BookSalesResponse(RtnCode.INVENTORY.getMessage());
+			}
 			//更新庫存
 			resItem.setInventory(inventory);
-			
-			//檢查: DB的category裡的每個分類 不能是null、不能是空、不能是全空白...增加到新增資訊的方法
-			List<String> cateDBList = new ArrayList<>();
-			String aryDB[] = resItem.getCategory().split(", ");  
-			List<String> listDB = new ArrayList<>(Arrays.asList(aryDB));  //Array轉成List
-			for (String cateItem : listDB) {
-				if (!StringUtils.hasText(cateItem)) {
-					continue;
-				}
-				cateDBList.add(cateItem);
-			}
-			//如果 輸入的分類 和 資料庫的分類 所有分類項目完全一樣...現在問題:只要有相同的項目就會return
-//			for (String inputItem : cateList) {
-//				for (String cateDBItem : cateDBList) {
-//					if (inputItem.equals(cateDBItem)) {
-//						return new BookSalesResponse(RtnCode.SAME_DATA.getMessage());
-//					}
-//				}
-//			}
 			//更新分類
-			resItem.setCategory(category);
+			resItem.setCategory(resCateStr);
 		}
 		bookSalesDao.saveAll(result);
-		return new BookSalesResponse(result);
+		return new BookSalesResponse(result, RtnCode.SUCCESSFUL.getMessage());
 		
-		//陣列轉成String
-//		String str1 = Arrays.toString(ary);
-		//去除掉中括號
-//		str1.substring(1, str1.length()-1);
 
 	}
 
 	//===方法五=======================
 	//書籍銷售
 	@Override
-	public BookSalesResponse buyBookByIsbn(Map<String, Integer> buyBookMap) {
+	public ShowForBuyingBookResponse buyBookByIsbn(Map<String, Integer> buyBookMap) {
 		//檢查: 輸入的String isbn 不能是null、不能是空、不能是全空白
 		//     輸入的int quantity 不能是負數
 		List<String> isbnList = new ArrayList<>();
@@ -230,7 +205,7 @@ public class BookSalesServiceImpl implements BookSalesService{
 		int priceTotal = 0;
 		for (Entry<String, Integer> map : buyBookMap.entrySet()) {
 			if (!StringUtils.hasText(map.getKey()) || map.getValue() < 0) {
-				return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
+				return new ShowForBuyingBookResponse(RtnCode.DATA_ERROR.getMessage());
 			}
 			isbnList.add(map.getKey());
 		}
@@ -238,7 +213,7 @@ public class BookSalesServiceImpl implements BookSalesService{
 		//確認資料庫是否存在isbnList的isbn
 		List<BookSales> result = bookSalesDao.findAllById(isbnList);
 		if (result.isEmpty()) {
-			return new BookSalesResponse(RtnCode.NOT_FOUND.getMessage());
+			return new ShowForBuyingBookResponse(RtnCode.NOT_FOUND.getMessage());
 		}
 		
 		//如果都沒問題，
@@ -246,7 +221,7 @@ public class BookSalesServiceImpl implements BookSalesService{
 			for (Entry<String, Integer> map : buyBookMap.entrySet()) {
 				//確認資料庫的inventory(庫存)
 				if (resItem.getInventory() < map.getValue()) {
-					return new BookSalesResponse(RtnCode.SHORTAGE.getMessage());
+					return new ShowForBuyingBookResponse(RtnCode.SHORTAGE.getMessage());
 				}
 				if (resItem.getIsbn().equals(map.getKey())) {
 					int eachtotal = map.getValue() * resItem.getPrice();
@@ -269,15 +244,22 @@ public class BookSalesServiceImpl implements BookSalesService{
 			}
 		}
 		bookSalesDao.saveAll(result);
-//		return new BookSalesResponse(buyBook);
-		return null;
+		return new ShowForBuyingBookResponse(buyBook, RtnCode.SUCCESSFUL.getMessage());
 	}
 
 	//===方法六=======================
 	//暢銷排行
 	@Override
-	public BookSalesResponse getBestSellerTop5() {
+	public ShowForResultResponse getBestSellerTop5() {
 		List<BookSales> bestSeller = bookSalesDao.findTopLimitNumOrderBySalesDesc(5);
-		return new BookSalesResponse(bestSeller);
+		//顯示限定的項目
+		//只顯示書名、ISBN、作者、價格
+		List<ShowForResult> result = new ArrayList<>();
+		for (BookSales item : bestSeller) {
+			ShowForResult showForCustomer = new ShowForResult(item.getBookName(), item.getIsbn(), 
+					item.getAuthor(), item.getPrice());
+			result.add(showForCustomer);
+		}
+		return new ShowForResultResponse(result, RtnCode.SUCCESSFUL.getMessage());
 	}
 }
