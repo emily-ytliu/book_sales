@@ -117,10 +117,10 @@ public class BookSalesTest {
 		BookSalesResponse result = bookSalesService.addBookInfo(booksales);
 		System.out.println(result.getMessage());
 	}
-	//檢查4: 輸入的category裡的每個分類 不能是空、不能是全空白
+	//檢查4: 輸入的category裡的每個分類 不能是空、不能是全空白...待check: 逗點不能在最後
 	@Test
 	public void addBookInfoCheck4Test() {
-		BookSales booksales = new BookSales("測試ISBN", "0000000003", "test", 100, 1, 1, "test, ,");
+		BookSales booksales = new BookSales("測試ISBN", "0000000010", "test", 100, 1, 1, "test,");
 		BookSalesResponse result = bookSalesService.addBookInfo(booksales);
 		System.out.println(result.getMessage());
 	}
@@ -137,6 +137,20 @@ public class BookSalesTest {
 	@Test
 	public void searchByCategoryTest() {
 		String category = "中文";
+		BookSalesResponse result = bookSalesService.searchByCategory(category);
+		System.out.println(result.getMessage());
+	}
+	//檢查: 輸入的String 不能是null、空字串、全空白
+	@Test
+	public void searchByCategoryCheckTest() {
+		String category = "";
+		BookSalesResponse result = bookSalesService.searchByCategory(category);
+		System.out.println(result.getMessage());
+	}
+	//確認: 資料庫有沒有輸入的category的資料
+	@Test
+	public void searchByCategoryConfirmTest() {
+		String category = "日文";
 		BookSalesResponse result = bookSalesService.searchByCategory(category);
 		System.out.println(result.getMessage());
 	}

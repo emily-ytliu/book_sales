@@ -59,9 +59,16 @@ public class BookSalesServiceImpl implements BookSalesService{
 		//檢查4: 輸入的category裡的每個分類 不能是空、不能是全空白
 		String ary[] = bookSales.getCategory().split(",");  
 		List<String> list = Arrays.asList(ary);  //Array轉成List
-		if (list.contains("") || list.contains(" ")) {
-			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
+		List<String> resList = new ArrayList<String>();
+		for (String item : list) {
+			if (!StringUtils.hasText(item)) {
+				return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
+			}
+			resList.add(item);
 		}
+		String cateStr = resList.toString();  //List轉成String
+		String resCateStr = cateStr.substring(1, cateStr.length()-1);  //去掉中括號
+		bookSales.setCategory(resCateStr);
 		//確認: 要新增的bookSales是否已經存在資料庫(不存在的才能新增)
 		Optional<BookSales> op = bookSalesDao.findById(bookSales.getIsbn());
 		if (op.isPresent()) {
@@ -78,7 +85,7 @@ public class BookSalesServiceImpl implements BookSalesService{
 		if (!StringUtils.hasText(category)) {
 			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
 		}
-		//確認資料庫有沒有輸入的category的資料
+		//確認: 資料庫有沒有輸入的category的資料
 		List<BookSales> result = bookSalesDao.findByCategory(category);
 		if (result.isEmpty()) {
 			return new BookSalesResponse(RtnCode.NOT_FOUND.getMessage());
@@ -100,8 +107,7 @@ public class BookSalesServiceImpl implements BookSalesService{
 	public ShowForResultResponse searchByKeyword(Boolean isCustomer, String keyword) {
 		//檢查: 輸入的boolean 不能是null
 		//檢查: 輸入的String 不能是null、不能是空字串、不能是全空白
-		if (isCustomer == null
-				|| !StringUtils.hasText(keyword)) {
+		if (isCustomer == null || !StringUtils.hasText(keyword)) {
 			return new ShowForResultResponse(RtnCode.DATA_ERROR.getMessage());
 		}
 		//確認資料庫是否存在輸入的keyword
@@ -154,15 +160,12 @@ public class BookSalesServiceImpl implements BookSalesService{
 			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
 		}
 		//檢查: 輸入的category裡的每個分類 不能是null、不能是空、不能是全空白
-		String ary[] = category.split(", ");  //ary是記憶體位址
-		List<String> list = new ArrayList<>(Arrays.asList(ary));  //Array轉成List
-		for (String inputItem : list) {
-			if (!StringUtils.hasText(inputItem)) {
-				continue;
-			}
-			cateList.add(inputItem);
+		String ary[] = category.split(",");  
+		List<String> list = Arrays.asList(ary);  //Array轉成List
+		if (list.contains("") || list.contains(" ")) {
+			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
 		}
-		String cateStr = cateList.toString();  //List轉成String
+		String cateStr = list.toString();  //List轉成String
 		String resCateStr = cateStr.substring(1, cateStr.length()-1);  //去掉中括號
 		
 		//用isbn(PK)從資料庫找到某書籍資訊
