@@ -33,7 +33,7 @@ public class BookSalesController {
 	}
 	
 	@PostMapping(value = "update")
-	public BookSalesResponse updateBookInfo(@RequestBody BookSalesRequest request) {
+	public ShowForResultResponse updateBookInfo(@RequestBody BookSalesRequest request) {
 		return bookSalesService.updateBookInfo(request.getIsbn(), request.getPrice(), request.getInventory(), request.getCategory());
 	}
 	

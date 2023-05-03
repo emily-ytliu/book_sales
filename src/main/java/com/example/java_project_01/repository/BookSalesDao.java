@@ -32,16 +32,16 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	public List<BookSales> findByKeyword(@Param("keyword") String keyword);
 	
 	//方法三: 消費者
-	//用書名、ISBN、作者搜尋 + 只顯示書名、ISBN、作者、價格這4個欄位 ...待checked
+	//用書名、ISBN、作者搜尋 + 只顯示書名、ISBN、作者、價格這4個欄位
 //	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price) FROM BookSales b "
 //			+ "WHERE b.bookName LIKE %:keyword% OR b.isbn LIKE %:keyword% OR b.author LIKE %:keyword%")
 //	public List<BookSales> findByKeywordForcustomer();
 	
 	//方法四: 更新書籍資訊
-	//只顯示書名、ISBN、作者、價格、庫存量、分類這6個欄位
-	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory, b.category) FROM BookSales b "
-			+ "WHERE b.isbn = :inputIsbn")
-	public List<BookSales> findByIsbnForSearching(@Param("inputIsbn") String isbn);
+	//只顯示書名、ISBN、作者、價格、庫存量、分類這6個欄位...saveAll()之後，sales欄位會變成預設值??
+//	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory, b.category) FROM BookSales b "
+//			+ "WHERE b.isbn = :inputIsbn")
+//	public List<BookSales> findByIsbnForSearching(@Param("inputIsbn") String isbn);
 	
 	//只顯示書名、ISBN、作者、價格這4個欄位
 	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price) FROM BookSales b")

@@ -25,7 +25,7 @@ public interface BookSalesService {
 	
 	//方法四
 	//更新書籍資訊(價格、庫存、分類)
-	public BookSalesResponse updateBookInfo(String isbn, int price, int inventory, String category);
+	public ShowForResultResponse updateBookInfo(String isbn, int price, int inventory, String category);
 	
 	//方法五
 	//書籍銷售<ISBN, 購買數量>

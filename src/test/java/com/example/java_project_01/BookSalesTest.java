@@ -60,11 +60,11 @@ public class BookSalesTest {
 		System.out.println(result.size());
 	}
 	
-	@Test
-	public void findByIsbnForSearchingTest() {
-		List<BookSales> result = bookSalesDao.findByIsbnForSearching("9786263524552");
-		System.out.println(result.size());
-	}
+//	@Test
+//	public void findByIsbnForSearchingTest() {
+//		List<BookSales> result = bookSalesDao.findByIsbnForSearching("9786263524552");
+//		System.out.println(result.size());
+//	}
 	
 	@Test
 	public void findByBookNameAndIsbnAndAuthorAndPriceTest() {
@@ -117,7 +117,7 @@ public class BookSalesTest {
 		BookSalesResponse result = bookSalesService.addBookInfo(booksales);
 		System.out.println(result.getMessage());
 	}
-	//檢查4: 輸入的category裡的每個分類 不能是空、不能是全空白...待check: 逗點不能在最後
+	//檢查4: 輸入的category裡的每個分類 不能是空、不能是全空白
 	@Test
 	public void addBookInfoCheck4Test() {
 		BookSales booksales = new BookSales("測試ISBN", "0000000010", "test", 100, 1, 1, "test,");
@@ -163,12 +163,40 @@ public class BookSalesTest {
 		ShowForResultResponse result = bookSalesService.searchByKeyword(true, keyword);
 		System.out.println(result.getMessage());
 	}
+	//檢查: 輸入的boolean 不能是null
+	//      輸入的String 不能是null、不能是空字串、不能是全空白
+	@Test
+	public void searchByKeywordCheckTest() {
+		String keyword = "";
+		ShowForResultResponse result = bookSalesService.searchByKeyword(false, keyword);
+		System.out.println(result.getMessage());
+	}
 	
 	//===方法四=======================
 	//正常
 	@Test
 	public void updateBookInfoTest() {
-		BookSalesResponse result = bookSalesService.updateBookInfo("9786263524552", 180, 99, "中文,輕小說");
+		ShowForResultResponse result = bookSalesService.updateBookInfo("1234567890", 99, 55, "test, test");
+		System.out.println(result.getMessage());
+	}
+	//檢查1: 輸入的每個項目
+	//      String: bookName、isbn、author、category 不能是null、不能是空、不能是全空白
+	//      int: price、inventory、sales 不能是負數
+	@Test
+	public void updateBookInfoCheck1Test() {
+		ShowForResultResponse result = bookSalesService.updateBookInfo("9786263524552", -400, 99, "中文, 輕小說");
+		System.out.println(result.getMessage());
+	}
+	//檢查2: 輸入的category裡的每個分類 不能是null、不能是空、不能是全空白
+	@Test
+	public void updateBookInfoCheck2Test() {
+		ShowForResultResponse result = bookSalesService.updateBookInfo("9786263524552", 200, 77, "中文,  ");
+		System.out.println(result.getMessage());
+	}
+	//確認: 資料庫是否有此Isbn的資料
+	@Test
+	public void updateBookInfoConfirmTest() {
+		ShowForResultResponse result = bookSalesService.updateBookInfo("0000000000000", 200, 77, "中文");
 		System.out.println(result.getMessage());
 	}
 	
@@ -178,6 +206,31 @@ public class BookSalesTest {
 	public void buyBookByIsbnTest() {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("9781801312592", 2);
+		ShowForBuyingBookResponse result = bookSalesService.buyBookByIsbn(map);
+		System.out.println(result.getMessage());
+	}
+	//檢查: 輸入的String isbn 不能是null、不能是空、不能是全空白
+	//      輸入的int quantity 不能是負數
+	@Test
+	public void buyBookByIsbnCheckTest() {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("   ", 2);
+		ShowForBuyingBookResponse result = bookSalesService.buyBookByIsbn(map);
+		System.out.println(result.getMessage());
+	}
+	//確認1: 資料庫是否存在isbnList的isbn
+	@Test
+	public void buyBookByIsbnConfirm1Test() {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("0000000000", 2);
+		ShowForBuyingBookResponse result = bookSalesService.buyBookByIsbn(map);
+		System.out.println(result.getMessage());
+	}
+	//確認2: 資料庫的inventory(庫存要大於書輸入的購買量)
+	@Test
+	public void buyBookByIsbnConfirm2Test() {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("9781801312592", 999);
 		ShowForBuyingBookResponse result = bookSalesService.buyBookByIsbn(map);
 		System.out.println(result.getMessage());
 	}
