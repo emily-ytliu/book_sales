@@ -44,8 +44,8 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 //	public List<BookSales> findByIsbnForSearching(@Param("inputIsbn") String isbn);
 	
 	//只顯示書名、ISBN、作者、價格這4個欄位
-	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price) FROM BookSales b")
-	public List<BookSales> findByBookNameAndIsbnAndAuthorAndPrice();
+//	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price) FROM BookSales b")
+//	public List<BookSales> findByBookNameAndIsbnAndAuthorAndPrice();
 	
 	//===SQL=============================
 	//用銷售量由大到小排序，並限制顯示的資料筆數
@@ -54,7 +54,11 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	public List<BookSales> findTopLimitNumOrderBySalesDesc(@Param("limitNum") int limitNum);
 	//因為JPQL不支援LIMIT，所以用原生SQL
 	//原生SQL才能用 SELECT *
+	//原生SQL要寫Table名(而不是Entity名)
 	
+	/*
+	 * 目前學到需要用到原生SQL: LIMIT、INSERT
+	 */
 	
 	
 	

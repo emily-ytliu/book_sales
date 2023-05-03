@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.Assert;
 
 import com.example.java_project_01.entity.BookSales;
 import com.example.java_project_01.repository.BookSalesDao;
@@ -28,11 +29,11 @@ public class BookSalesTest {
 	@Autowired
 	private BookSalesService bookSalesService;
 	
-//	//  4/26
+	//  4/26
 //	//新增假資料 (每一個方法前後)
 //	@BeforeEach
 //	public void beforeEach() {
-//		
+//		BookSales oldData = bookSalesDao.save(new BookSales("測試ISBN", "0000000002", "test", 100, 10, 5, "test, test"));
 //	}
 //	
 //	//刪除假資料 (每一個方法前後)
@@ -52,6 +53,7 @@ public class BookSalesTest {
 	public void findByCategoryTest() {
 		List<BookSales> result = bookSalesDao.findByCategory("中文");
 		System.out.println(result.size());
+//		Assert.isTrue(false, null);
 	}
 	
 	@Test
@@ -66,11 +68,11 @@ public class BookSalesTest {
 //		System.out.println(result.size());
 //	}
 	
-	@Test
-	public void findByBookNameAndIsbnAndAuthorAndPriceTest() {
-		List<BookSales> result = bookSalesDao.findByBookNameAndIsbnAndAuthorAndPrice();
-		System.out.println(result.size());
-	}
+//	@Test
+//	public void findByBookNameAndIsbnAndAuthorAndPriceTest() {
+//		List<BookSales> result = bookSalesDao.findByBookNameAndIsbnAndAuthorAndPrice();
+//		System.out.println(result.size());
+//	}
 	
 	@Test
 	public void findTopLimitNumOrderBySalesDescTest() {
