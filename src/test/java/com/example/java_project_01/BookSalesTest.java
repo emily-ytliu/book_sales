@@ -98,12 +98,42 @@ public class BookSalesTest {
 	//正常
 	@Test
 	public void addBookInfoTest() {
-		BookSales booksales = new BookSales("貓與海的彼端", "9786263524552", "巧喵", 237, 99, 1, "中文,輕小說");
+		BookSales booksales = new BookSales("測試ISBN", "0000000001", "test", 100, 10, 5, "test, test");
+		BookSalesResponse result = bookSalesService.addBookInfo(booksales);
+		System.out.println(result.getMessage());
+	}
+	//檢查1: 輸入的bookSales 不能是null
+	//檢查2: 輸入的bookSales的每項資訊
+	@Test
+	public void addBookInfoCheck1And2Test() {
+		BookSales booksales = new BookSales(" ", "9786263524552", "巧喵", 237, 99, 1, "中文,輕小說");
+		BookSalesResponse result = bookSalesService.addBookInfo(booksales);
+		System.out.println(result.getMessage());
+	}
+	//檢查3: ISBN格式
+	@Test
+	public void addBookInfoCheck3Test() {
+		BookSales booksales = new BookSales("測試ISBN", "1234567890", "test", 100, 1, 1, "test");
+		BookSalesResponse result = bookSalesService.addBookInfo(booksales);
+		System.out.println(result.getMessage());
+	}
+	//檢查4: 輸入的category裡的每個分類 不能是空、不能是全空白
+	@Test
+	public void addBookInfoCheck4Test() {
+		BookSales booksales = new BookSales("測試ISBN", "0000000003", "test", 100, 1, 1, "test, ,");
+		BookSalesResponse result = bookSalesService.addBookInfo(booksales);
+		System.out.println(result.getMessage());
+	}
+	//確認: 要新增的bookSales是否已經存在資料庫(不存在的才能新增)
+	@Test
+	public void addBookInfoConfirmTest() {
+		BookSales booksales = new BookSales("測試ISBN", "0000000001", "test", 100, 10, 5, "test, test");
 		BookSalesResponse result = bookSalesService.addBookInfo(booksales);
 		System.out.println(result.getMessage());
 	}
 	
 	//===方法二=======================
+	//正常
 	@Test
 	public void searchByCategoryTest() {
 		String category = "中文";
@@ -112,6 +142,7 @@ public class BookSalesTest {
 	}
 	
 	//===方法三=======================
+	//正常
 	@Test
 	public void searchByKeywordTest() {
 		String keyword = "9786263524552";
@@ -120,6 +151,7 @@ public class BookSalesTest {
 	}
 	
 	//===方法四=======================
+	//正常
 	@Test
 	public void updateBookInfoTest() {
 		BookSalesResponse result = bookSalesService.updateBookInfo("9786263524552", 180, 99, "中文,輕小說");
@@ -127,6 +159,7 @@ public class BookSalesTest {
 	}
 	
 	//===方法五=======================
+	//正常
 	@Test
 	public void buyBookByIsbnTest() {
 		Map<String, Integer> map = new HashMap<>();
@@ -136,6 +169,7 @@ public class BookSalesTest {
 	}
 	
 	//===方法六=======================
+	//正常
 	@Test
 	public void getBestSellerTop5() {
 		ShowForResultResponse result = bookSalesService.getBestSellerTop5();

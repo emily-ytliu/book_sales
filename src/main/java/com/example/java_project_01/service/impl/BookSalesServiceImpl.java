@@ -52,19 +52,16 @@ public class BookSalesServiceImpl implements BookSalesService{
 			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
 		}
 		//檢查3: ISBN格式
-		String pattern = "^\\d{10}(\\d{3}?)$";  //可以輸入10位數字，或者10+3=13位數字  //? 表示出現0次或1次
+		String pattern = "^\\d{10}(\\d{3})?$";  //可以輸入10位數字，或者10+3=13位數字  //? 表示出現0次或1次
 		if (!bookSales.getIsbn().matches(pattern)) {
 			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
 		}
-		//檢查4: 輸入的category裡的每個分類 不能是null、不能是空、不能是全空白
-		String aryDB[] = bookSales.getCategory().split(", ");  
-		List<String> listDB = new ArrayList<>(Arrays.asList(aryDB));  //Array轉成List
-		for (String cateItem : listDB) {
-			if (!StringUtils.hasText(cateItem)) {
-				return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
-			}
-		}	
-		
+		//檢查4: 輸入的category裡的每個分類 不能是空、不能是全空白
+		String ary[] = bookSales.getCategory().split(",");  
+		List<String> list = Arrays.asList(ary);  //Array轉成List
+		if (list.contains("") || list.contains(" ")) {
+			return new BookSalesResponse(RtnCode.DATA_ERROR.getMessage());
+		}
 		//確認: 要新增的bookSales是否已經存在資料庫(不存在的才能新增)
 		Optional<BookSales> op = bookSalesDao.findById(bookSales.getIsbn());
 		if (op.isPresent()) {
