@@ -192,16 +192,34 @@ public class BookSalesTest {
 	//檢查2: 輸入的category裡的每個分類 不能是null、不能是空、不能是全空白
 	@Test
 	public void updateBookInfoCheck2Test() {
-		ShowForResultResponse result = bookSalesService.updateBookInfo("9786263524552", 200, 77, "中文,  ");
+		ShowForResultResponse result = bookSalesService.updateBookInfo("9786263524552", 200, 77, "中文,   ");
 		System.out.println(result.getMessage());
 	}
-	//確認: 資料庫是否有此Isbn的資料
+	//確認1: 資料庫是否有此Isbn的資料
 	@Test
-	public void updateBookInfoConfirmTest() {
+	public void updateBookInfoConfirm1Test() {
 		ShowForResultResponse result = bookSalesService.updateBookInfo("0000000000000", 200, 77, "中文");
 		System.out.println(result.getMessage());
 	}
-	
+	//確認2: 如果price和inventory和category與資料庫資料相同，就不更改
+	@Test
+	public void updateBookInfoConfirm2Test() {
+		ShowForResultResponse result = bookSalesService.updateBookInfo("0000000001", 0, 77, "中文");
+		System.out.println(result.getMessage());
+	}
+	//確認3: 輸入的庫存 要大於 原本資料庫的庫存 (因為是進貨)
+	@Test
+	public void updateBookInfoConfirm3Test() {
+		ShowForResultResponse result = bookSalesService.updateBookInfo("0000000001", 200, 79, "中文");
+		System.out.println(result.getMessage());
+	}
+//	//確認4: 如果category List長度相同，看輸入的每個分類項目是否與資料庫完全相同
+//	@Test
+//	public void updateBookInfoConfirm4Test() {
+//		ShowForResultResponse result = bookSalesService.updateBookInfo("0000000000010", 200, 10, "中文");
+//		System.out.println(result.getMessage());
+//	}
+
 	//===方法五=======================
 	//正常
 	@Test

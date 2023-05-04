@@ -19,25 +19,35 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 //	public List<BookSales> findByCategoryContaining(String category);
 	
 	//===JPQL=============================
+	
 	//方法二: 分類搜尋
+	
 	//只顯示書名、ISBN、作者、價格、庫存量，這5個欄位
 	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory) FROM BookSales b "
 			+ "WHERE b.category LIKE %:inputCategory%")
 	public List<BookSales> findByCategory(@Param("inputCategory") String category);
 	
 	//方法三: 消費者或書商搜尋
-	//用書名、ISBN、作者搜尋
-	@Query("SELECT b FROM BookSales b "
-			+ "WHERE b.bookName LIKE %:keyword% OR b.isbn LIKE %:keyword% OR b.author LIKE %:keyword%")
+	
+	//用書名、ISBN、作者搜尋(%寫法)
+//	@Query("SELECT b FROM BookSales b "
+//			+ "WHERE b.bookName LIKE %:keyword% OR b.isbn LIKE %:keyword% OR b.author LIKE %:keyword%")
+//	public List<BookSales> findByKeyword(@Param("keyword") String keyword);
+	
+	//用書名、ISBN、作者搜尋(REGEXP寫法)
+	@Query(value = "SELECT * FROM book_sales b "
+	        + "WHERE b.book_name REGEXP :keyword OR b.isbn REGEXP :keyword OR b.author REGEXP :keyword", nativeQuery = true)
 	public List<BookSales> findByKeyword(@Param("keyword") String keyword);
 	
 	//方法三: 消費者
+	
 	//用書名、ISBN、作者搜尋 + 只顯示書名、ISBN、作者、價格這4個欄位
 //	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price) FROM BookSales b "
 //			+ "WHERE b.bookName LIKE %:keyword% OR b.isbn LIKE %:keyword% OR b.author LIKE %:keyword%")
 //	public List<BookSales> findByKeywordForcustomer();
 	
 	//方法四: 更新書籍資訊
+	
 	//只顯示書名、ISBN、作者、價格、庫存量、分類這6個欄位...saveAll()之後，sales欄位會變成預設值??
 //	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory, b.category) FROM BookSales b "
 //			+ "WHERE b.isbn = :inputIsbn")
@@ -48,6 +58,9 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 //	public List<BookSales> findByBookNameAndIsbnAndAuthorAndPrice();
 	
 	//===SQL=============================
+	
+	//方法六: 暢銷排行
+	
 	//用銷售量由大到小排序，並限制顯示的資料筆數
 	@Query(value = "SELECT * FROM book_sales b "
 			+ "ORDER BY b.sales DESC LIMIT :limitNum", nativeQuery = true)  //nativeQuery = true表示直接對DB操作，等於用原生SQL查詢
@@ -55,6 +68,9 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	//因為JPQL不支援LIMIT，所以用原生SQL
 	//原生SQL才能用 SELECT *
 	//原生SQL要寫Table名(而不是Entity名)
+	//原生SQL要加上value = 
+	
+	//LIMIT
 	
 	/*
 	 * 目前學到需要用到原生SQL: LIMIT、INSERT
