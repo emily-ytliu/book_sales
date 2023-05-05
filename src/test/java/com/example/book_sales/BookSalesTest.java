@@ -1,4 +1,4 @@
-package com.example.java_project_01;
+package com.example.book_sales;
 
 import java.util.ArrayList;
 import java.util.Arrays;
