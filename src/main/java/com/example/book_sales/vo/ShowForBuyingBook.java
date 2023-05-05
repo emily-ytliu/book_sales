@@ -1,4 +1,4 @@
-package com.example.java_project_01.vo;
+package com.example.book_sales.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

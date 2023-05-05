@@ -13,14 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import com.example.java_project_01.entity.BookSales;
-import com.example.java_project_01.repository.BookSalesDao;
-import com.example.java_project_01.service.ifs.BookSalesService;
-import com.example.java_project_01.vo.BookSalesResponse;
-import com.example.java_project_01.vo.ShowForBuyingBookResponse;
-import com.example.java_project_01.vo.ShowForResultResponse;
+import com.example.book_sales.bookSalesApplication;
+import com.example.book_sales.entity.BookSales;
+import com.example.book_sales.repository.BookSalesDao;
+import com.example.book_sales.service.ifs.BookSalesService;
+import com.example.book_sales.vo.BookSalesResponse;
+import com.example.book_sales.vo.ShowForBuyingBookResponse;
+import com.example.book_sales.vo.ShowForResultResponse;
 
-@SpringBootTest(classes = JavaProject01Application.class)
+@SpringBootTest(classes = bookSalesApplication.class)
 public class BookSalesTest {
 
 	@Autowired

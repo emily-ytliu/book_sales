@@ -1,51 +1,40 @@
-package com.example.java_project_01.entity;
-
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.DynamicUpdate;
+package com.example.book_sales.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-@DynamicUpdate(true)
-@Entity
-@Table(name = "book_sales")
-public class BookSales {
+public class ShowForResult {
 
-	@Column(name = "book_name")
 	private String bookName;
 	
-	@Id
-	@Column(name = "ISBN")
 	private String isbn;
 	
-	@Column(name = "author")
 	private String author;
 	
-	@Column(name = "price")
 	private int price;
 	
-	@Column(name = "inventory")
 	private int inventory;
 	
-	  //at Transient告訴 Hibernate 不要將其映射到資料庫表格中
-	@Column(name = "sales")
 	private int sales;
 	
-	@Column(name = "category")
 	private String category;
-	
-	public BookSales() {
+
+	public ShowForResult() {
 		
 	}
 
-	public BookSales(String bookName, String isbn, String author, int price) {
+	//方法二: 分類搜尋
+	public ShowForResult(String bookName, String isbn, String author, int price, int inventory) {
+		super();
+		this.bookName = bookName;
+		this.isbn = isbn;
+		this.author = author;
+		this.price = price;
+		this.inventory = inventory;
+	}
+	
+	//方法三: 消費者  //方法六: 暢銷排行
+	public ShowForResult(String bookName, String isbn, String author, int price) {
 		super();
 		this.bookName = bookName;
 		this.isbn = isbn;
@@ -53,27 +42,8 @@ public class BookSales {
 		this.price = price;
 	}
 	
-	public BookSales(String bookName, String isbn, String author, int price, int inventory) {
-		super();
-		this.bookName = bookName;
-		this.isbn = isbn;
-		this.author = author;
-		this.price = price;
-		this.inventory = inventory;
-	}
-
-	public BookSales(String bookName, String isbn, String author, int price, int inventory, String category) {
-		super();
-		this.bookName = bookName;
-		this.isbn = isbn;
-		this.author = author;
-		this.price = price;
-		this.inventory = inventory;
-		this.category = category;
-	}
-
-	public BookSales(String bookName, String isbn, String author, int price, int inventory, int sales,
-			String category) {
+	//方法三: 書商
+	public ShowForResult(String bookName, String isbn, String author, int price, int inventory, int sales) {
 		super();
 		this.bookName = bookName;
 		this.isbn = isbn;
@@ -81,9 +51,19 @@ public class BookSales {
 		this.price = price;
 		this.inventory = inventory;
 		this.sales = sales;
+	}
+	
+	//方法四: 更新
+	public ShowForResult(String bookName, String isbn, String author, int price, int inventory, String category) {
+		super();
+		this.bookName = bookName;
+		this.isbn = isbn;
+		this.author = author;
+		this.price = price;
+		this.inventory = inventory;
 		this.category = category;
 	}
-
+	
 	public String getBookName() {
 		return bookName;
 	}
@@ -139,5 +119,5 @@ public class BookSales {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
+	
 }

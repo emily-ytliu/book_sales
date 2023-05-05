@@ -1,15 +1,15 @@
-package com.example.java_project_01.controller;
+package com.example.book_sales.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.java_project_01.service.ifs.BookSalesService;
-import com.example.java_project_01.vo.BookSalesRequest;
-import com.example.java_project_01.vo.BookSalesResponse;
-import com.example.java_project_01.vo.ShowForBuyingBookResponse;
-import com.example.java_project_01.vo.ShowForResultResponse;
+import com.example.book_sales.service.ifs.BookSalesService;
+import com.example.book_sales.vo.BookSalesRequest;
+import com.example.book_sales.vo.BookSalesResponse;
+import com.example.book_sales.vo.ShowForBuyingBookResponse;
+import com.example.book_sales.vo.ShowForResultResponse;
 
 @RestController
 public class BookSalesController {

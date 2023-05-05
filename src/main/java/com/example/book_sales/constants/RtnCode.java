@@ -1,4 +1,4 @@
-package com.example.java_project_01.constants;
+package com.example.book_sales.constants;
 
 public enum RtnCode {
 

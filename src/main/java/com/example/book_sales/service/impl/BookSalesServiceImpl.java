@@ -1,4 +1,4 @@
-package com.example.java_project_01.service.impl;
+package com.example.book_sales.service.impl;
 
 import java.awt.print.Pageable;
 import java.util.ArrayList;
@@ -16,15 +16,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.example.java_project_01.constants.RtnCode;
-import com.example.java_project_01.entity.BookSales;
-import com.example.java_project_01.repository.BookSalesDao;
-import com.example.java_project_01.service.ifs.BookSalesService;
-import com.example.java_project_01.vo.BookSalesResponse;
-import com.example.java_project_01.vo.ShowForBuyingBook;
-import com.example.java_project_01.vo.ShowForBuyingBookResponse;
-import com.example.java_project_01.vo.ShowForResult;
-import com.example.java_project_01.vo.ShowForResultResponse;
+import com.example.book_sales.constants.RtnCode;
+import com.example.book_sales.entity.BookSales;
+import com.example.book_sales.repository.BookSalesDao;
+import com.example.book_sales.service.ifs.BookSalesService;
+import com.example.book_sales.vo.BookSalesResponse;
+import com.example.book_sales.vo.ShowForBuyingBook;
+import com.example.book_sales.vo.ShowForBuyingBookResponse;
+import com.example.book_sales.vo.ShowForResult;
+import com.example.book_sales.vo.ShowForResultResponse;
 
 @Service
 public class BookSalesServiceImpl implements BookSalesService{

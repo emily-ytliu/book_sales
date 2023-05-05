@@ -1,4 +1,4 @@
-package com.example.java_project_01.repository;
+package com.example.book_sales.repository;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.java_project_01.entity.BookSales;
+import com.example.book_sales.entity.BookSales;
 
 @Repository
 public interface BookSalesDao extends JpaRepository<BookSales, String>{

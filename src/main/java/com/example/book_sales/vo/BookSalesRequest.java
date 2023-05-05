@@ -1,9 +1,9 @@
-package com.example.java_project_01.vo;
+package com.example.book_sales.vo;
 
 import java.util.List;
 import java.util.Map;
 
-import com.example.java_project_01.entity.BookSales;
+import com.example.book_sales.entity.BookSales;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BookSalesRequest {

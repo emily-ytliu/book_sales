@@ -1,12 +1,12 @@
-package com.example.java_project_01.service.ifs;
+package com.example.book_sales.service.ifs;
 
 import java.util.List;
 import java.util.Map;
 
-import com.example.java_project_01.entity.BookSales;
-import com.example.java_project_01.vo.BookSalesResponse;
-import com.example.java_project_01.vo.ShowForBuyingBookResponse;
-import com.example.java_project_01.vo.ShowForResultResponse;
+import com.example.book_sales.entity.BookSales;
+import com.example.book_sales.vo.BookSalesResponse;
+import com.example.book_sales.vo.ShowForBuyingBookResponse;
+import com.example.book_sales.vo.ShowForResultResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 public interface BookSalesService {
