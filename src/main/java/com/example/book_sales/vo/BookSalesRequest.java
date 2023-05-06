@@ -13,8 +13,8 @@ public class BookSalesRequest {
 	
 	private String category;
 	
-	@JsonProperty("is_customer")
-	private boolean isCustomer;
+	@JsonProperty("is_seller")
+	private boolean isSeller;
 	
 	private String keyword;
 	
@@ -42,15 +42,15 @@ public class BookSalesRequest {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
-	public boolean isCustomer() {
-		return isCustomer;
-	}
-
-	public void setCustomer(boolean isCustomer) {
-		this.isCustomer = isCustomer;
-	}
 		
+	public boolean isSeller() {
+		return isSeller;
+	}
+
+	public void setSeller(boolean isSeller) {
+		this.isSeller = isSeller;
+	}
+
 	public String getKeyword() {
 		return keyword;
 	}

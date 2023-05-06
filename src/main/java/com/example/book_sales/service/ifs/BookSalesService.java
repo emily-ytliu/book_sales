@@ -21,11 +21,23 @@ public interface BookSalesService {
 	
 	//方法三
 	//書籍搜尋
-	public ShowForResultResponse searchByKeyword(Boolean isCustomer, String keyword);
+	public ShowForResultResponse searchByKeyword(boolean isSeller, String keyword);
 	
 	//方法四
-	//更新書籍資訊(價格、庫存、分類)
+	//更新書籍資訊(用ISBN，更新: 價格、庫存、分類)
 	public ShowForResultResponse updateBookInfo(String isbn, int price, int inventory, String category);
+	
+	//方法四-1
+	//只更新價格<ISBN, 價格>
+	public ShowForResultResponse updateBookPrice(Map<String, Integer> updatePriceMap);
+	
+	//方法四-2
+	//只更新庫存<ISBN, 庫存量>
+	public ShowForResultResponse updateBookInventory(Map<String, Integer> updateInventoryMap);
+	
+	//方法四-3
+	//只更新分類<ISBN, 分類>
+	public ShowForResultResponse updateBookCategory(Map<String, String> updateCategoryMap);
 	
 	//方法五
 	//書籍銷售<ISBN, 購買數量>

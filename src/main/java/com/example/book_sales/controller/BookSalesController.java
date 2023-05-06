@@ -29,7 +29,7 @@ public class BookSalesController {
 	
 	@PostMapping(value = "search_by_keyword")
 	public ShowForResultResponse searchByKeyword(@RequestBody BookSalesRequest request) {
-		return bookSalesService.searchByKeyword(request.isCustomer(), request.getKeyword());
+		return bookSalesService.searchByKeyword(request.isSeller(), request.getKeyword());
 	}
 	
 	@PostMapping(value = "update")
