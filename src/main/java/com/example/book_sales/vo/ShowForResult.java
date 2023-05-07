@@ -64,6 +64,16 @@ public class ShowForResult {
 		this.category = category;
 	}
 	
+	//方法四-3: 
+	public ShowForResult(String bookName, String isbn, String author, int price, String category) {
+		super();
+		this.bookName = bookName;
+		this.isbn = isbn;
+		this.author = author;
+		this.price = price;
+		this.category = category;
+	}
+	
 	public String getBookName() {
 		return bookName;
 	}

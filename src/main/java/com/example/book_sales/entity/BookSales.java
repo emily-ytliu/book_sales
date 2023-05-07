@@ -34,7 +34,7 @@ public class BookSales {
 	@Column(name = "inventory")
 	private int inventory;
 	
-	  //at Transient告訴 Hibernate 不要將其映射到資料庫表格中
+	  //如果寫 at Transient 是告訴 Hibernate 不要將其映射到資料庫表格中
 	@Column(name = "sales")
 	private int sales;
 	

@@ -24,6 +24,15 @@ public class BookSalesRequest {
 	
 	private int inventory;
 	
+	@JsonProperty("update_price")
+	private Map<String, Integer> updatePriceMap;
+	
+	@JsonProperty("update_inventory")
+	private Map<String, Integer> updateInventoryMap;
+	
+	@JsonProperty("update_category")
+	private Map<String, String> updateCategoryMap;
+	
 	@JsonProperty("buy_book_map")
 	private Map<String, Integer> buyBookMap;
 
@@ -89,6 +98,30 @@ public class BookSalesRequest {
 
 	public void setBuyBookMap(Map<String, Integer> buyBookMap) {
 		this.buyBookMap = buyBookMap;
+	}
+
+	public Map<String, Integer> getUpdatePriceMap() {
+		return updatePriceMap;
+	}
+
+	public void setUpdatePriceMap(Map<String, Integer> updatePriceMap) {
+		this.updatePriceMap = updatePriceMap;
+	}
+
+	public Map<String, Integer> getUpdateInventoryMap() {
+		return updateInventoryMap;
+	}
+
+	public void setUpdateInventoryMap(Map<String, Integer> updateInventoryMap) {
+		this.updateInventoryMap = updateInventoryMap;
+	}
+
+	public Map<String, String> getUpdateCategoryMap() {
+		return updateCategoryMap;
+	}
+
+	public void setUpdateCategoryMap(Map<String, String> updateCategoryMap) {
+		this.updateCategoryMap = updateCategoryMap;
 	}
 	
 }

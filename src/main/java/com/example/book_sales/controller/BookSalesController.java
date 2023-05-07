@@ -37,6 +37,21 @@ public class BookSalesController {
 		return bookSalesService.updateBookInfo(request.getIsbn(), request.getPrice(), request.getInventory(), request.getCategory());
 	}
 	
+	@PostMapping(value = "update_price")
+	public ShowForResultResponse updateBookPrice(@RequestBody BookSalesRequest request) {
+		return bookSalesService.updateBookPrice(request.getUpdatePriceMap());
+	}
+	
+	@PostMapping(value = "update_inventory")
+	public ShowForResultResponse updateBookInventory(@RequestBody BookSalesRequest request) {
+		return bookSalesService.updateBookInventory(request.getUpdateInventoryMap());
+	}
+	
+	@PostMapping(value = "update_category")
+	public ShowForResultResponse updateBookCategory(@RequestBody BookSalesRequest request) {
+		return bookSalesService.updateBookCategory(request.getUpdateCategoryMap());
+	}
+	
 	@PostMapping(value = "buy_book")
 	public ShowForBuyingBookResponse buyBookByIsbn(@RequestBody BookSalesRequest request) {
 		return bookSalesService.buyBookByIsbn(request.getBuyBookMap());
