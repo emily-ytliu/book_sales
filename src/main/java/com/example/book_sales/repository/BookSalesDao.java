@@ -28,6 +28,11 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 	
 	
 	//方法三: 消費者或書商搜尋
+	/*
+	 * 用 書名 或 ISBN 或 作者 搜尋
+	 * 可能組合: (1)書名 (2)ISBN (3)作者 (4)書名+ISBN (5)書名+作者 (6)ISBN+作者
+	 */
+	
 	//用書名、ISBN、作者搜尋(REGEXP寫法)
 	@Query(value = "SELECT * FROM book_sales b "
 	        + "WHERE b.book_name REGEXP :keyword OR b.isbn REGEXP :keyword OR b.author REGEXP :keyword", nativeQuery = true)
@@ -50,7 +55,7 @@ public interface BookSalesDao extends JpaRepository<BookSales, String>{
 //	public List<BookSales> findByKeywordForcustomer();
 	
 	//方法四: 更新書籍資訊
-	//只顯示書名、ISBN、作者、價格、庫存量、分類這6個欄位...saveAll()之後，sales欄位會變成預設值??
+	//只顯示書名、ISBN、作者、價格、庫存量、分類這6個欄位...saveAll()之後，sales欄位會變成預設值
 //	@Query("SELECT NEW BookSales(b.bookName, b.isbn, b.author, b.price, b.inventory, b.category) FROM BookSales b "
 //			+ "WHERE b.isbn = :inputIsbn")
 //	public List<BookSales> findByIsbnForSearching(@Param("inputIsbn") String isbn);

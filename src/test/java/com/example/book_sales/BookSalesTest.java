@@ -53,6 +53,10 @@ public class BookSalesTest {
 //		System.out.println(result.size());
 //	}
 	
+	/*
+	 * Assert.isTrue(false, null) 怎麼寫?
+	 */
+	
 	@Test
 	public void findByCategoryTest() {
 		List<BookSales> result = bookSalesDao.findByCategory("中文");
@@ -173,8 +177,7 @@ public class BookSalesTest {
 	//正常
 	@Test
 	public void searchByKeywordTest() {
-		String keyword = "9786263524552";
-//		List<String> keyword = new ArrayList<>(Arrays.asList("A", "P"));
+		String keyword = "9786263524552 chicken";
 		ShowForResultResponse result = bookSalesService.searchByKeyword(true, keyword);
 		System.out.println(result.getMessage());
 	}
@@ -315,10 +318,6 @@ public class BookSalesTest {
 		ShowForResultResponse result = bookSalesService.updateBookCategory(map);
 		System.out.println(result.getMessage());
 	}
-	
-	/*
-	 * 問題: Set是用什麼做排序??
-	 */
 	
 	@Test
 	public void SetTest() {

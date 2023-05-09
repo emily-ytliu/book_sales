@@ -131,19 +131,17 @@ public class BookSalesServiceImpl implements BookSalesService{
 			return new ShowForResultResponse(RtnCode.DATA_ERROR.getMessage());
 		}
 		
+		//同時輸入多個keyword，輸入時用空格區隔；Dao用"|"連接後再搜尋資料庫
+		List<String> keywordList = new ArrayList<>();
+		String ary[] = keyword.split(" ");
+		List<String> list = Arrays.asList(ary);  //Array轉成List
+		keyword = String.join("|", list);  //List轉成String，同時用"|"去連接
+		
 		//確認: 資料庫是否存在輸入的keyword
 		List<BookSales> result = bookSalesDao.findByKeyword(keyword);
 		if (result.isEmpty()) {
 			return new ShowForResultResponse(RtnCode.NOT_FOUND.getMessage());
 		}
-		
-		//測試
-//		for (String item : keyword) {
-//			List<BookSales> result = bookSalesDao.findByKeyword(item);
-//			if (result.isEmpty()) {
-//				return new ShowForResultResponse(RtnCode.NOT_FOUND.getMessage());
-//			}
-//		}
 		
 		//顯示限定的項目
 		
@@ -184,7 +182,7 @@ public class BookSalesServiceImpl implements BookSalesService{
 		//      String: bookName、isbn、author、category 不能是null、不能是空、不能是全空白
 		//      int: price、inventory、sales 不能是負數
 		if (!StringUtils.hasText(isbn)
-				|| price < 0
+				|| price <= 0
 				|| inventory < 0
 				|| !StringUtils.hasText(category)) {
 			return new ShowForResultResponse(RtnCode.DATA_ERROR.getMessage());

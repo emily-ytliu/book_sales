@@ -1,6 +1,7 @@
 package com.example.book_sales.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,7 +58,8 @@ public class BookSalesController {
 		return bookSalesService.buyBookByIsbn(request.getBuyBookMap());
 	}
 	
-	@PostMapping(value = "best_seller")
+	//寫Get，是請求資源，@RequestBody是空的
+	@GetMapping(value = "best_seller")
 	public ShowForResultResponse getBestSellerTop5() {
 		return bookSalesService.getBestSellerTop5();
 	}
